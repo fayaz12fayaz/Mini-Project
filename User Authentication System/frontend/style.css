@@ -1,0 +1,114 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #84fab0, #8fd3f4, #f6d365, #fda085);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+.auth-container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  text-align: center;
+  width: 350px;
+  animation: fadeIn 0.8s ease;
+}
+
+.auth-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.auth-container input {
+  width: 100%;
+  padding: 10px 12px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  transition: 0.3s;
+  font-size: 1rem;
+}
+
+.auth-container input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0,123,255,0.4);
+}
+
+.auth-container button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 10px;
+  border: none;
+  background: #007bff;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.auth-container button:hover {
+  background: #0056b3;
+}
+
+.auth-container p {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.auth-container a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.auth-container a:hover {
+  text-decoration: underline;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {opacity:0; transform: translateY(-20px);}
+  to {opacity:1; transform: translateY(0);}
+}
+.welcome-container {
+  background: rgba(255,255,255,0.95);
+  padding: 40px 50px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  text-align: center;
+  animation: fadeIn 0.8s ease;
+}
+
+.welcome-container h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+.welcome-container p {
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  color: #555;
+}
+
+.welcome-container button {
+  padding: 10px 25px;
+  border-radius: 10px;
+  border: none;
+  background: #007bff;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.welcome-container button:hover {
+  background: #0056b3;
+}
