@@ -1,1 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Attendance Tracker</title>
+  <style>
+    :root {
+      --bg: linear-gradient(135deg, #a5b4fc, #fbcfe8, #bbf7d0);
+      --card: #ffffff;
+      --text: #1f2937;
+      --present: #22c55e;
+      --absent: #ef4444;
+    }
+
+    * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      padding: 20px;
+    }
+
+    .container { max-width: 950px; margin: auto; }
+
+    h1 {
+      text-align: center;
+      font-size: 38px;
+      margin-bottom: 30px;
+      background: linear-gradient(90deg, #4f46e5, #ec4899, #22c55e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    input {
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 2px solid #e5e7eb;
+      font-size: 15px;
+    }
+
+    button {
+      padding: 12px 20px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      color: white;
+      transition: all 0.25s ease;
+    }
+
+    button:hover { transform: scale(1.05); }
+
+    button.secondary {
+      background: linear-gradient(135deg, #9ca3af, #6b7280);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 14px;
+      text-align: center;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    th { background: linear-gradient(90deg, #e0e7ff, #fce7f3); }
+
+    .status-btn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .present { background: #dcfce7; color: var(--present); }
+    .absent { background: #fee2e2; color: var(--absent); }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+    }
+
+    .summary-box {
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #eef2ff, #fdf2f8);
+    }
+
+    .summary-box h2 { font-size: 30px; margin: 0; }
+    .summary-box p { margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Student Attendance Tracker</h1>
+    
+
+    <div class="card">
+      <div class="top-bar">
+        <input type="text" id="studentName" placeholder="🎓 Enter student name" />
+        <input type="date" id="attendanceDate" />
+        <button onclick="addStudent()">➕ Add Student</button>
+        <button class="secondary" onclick="resetAttendance()">🔄 Reset Day</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Student Name</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="attendanceTable"></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Attendance Summary</h3>
+      <div class="summary">
+        <div class="summary-box">
+          <h2 id="totalStudents">0</h2>
+          <p>Total Students</p>
+        </div>
+        <div class="summary-box">
+          <h2 id="presentCount">0</h2>
+          <p>Present</p>
+        </div>
+        <div class="summary-box">
+          <h2 id="absentCount">0</h2>
+          <p>Absent</p>
+        </div>
+        <div class="summary-box">
+          <h2 id="percentage">0%</h2>
+          <p>Attendance %</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let students = [];
+    let selectedDate = new Date().toISOString().split('T')[0];
+
+    document.getElementById('attendanceDate').value = selectedDate;
+
+    function addStudent() {
+      const nameInput = document.getElementById('studentName');
+      const dateInput = document.getElementById('attendanceDate');
+      const name = nameInput.value.trim();
+      selectedDate = dateInput.value;
+
+      if (!name) {
+        alert('Please enter a student name');
+        return;
+      }
+
+      students.push({ name, status: 'Present', date: selectedDate });
+      nameInput.value = '';
+      renderTable();
+    }
+
+    function toggleStatus(index) {
+      const todaysStudents = students.filter(s => s.date === selectedDate);
+      const student = todaysStudents[index];
+      student.status = student.status === 'Present' ? 'Absent' : 'Present';
+      renderTable();
+    }
+
+    function resetAttendance() {
+      if (!confirm('Reset attendance for this date?')) return;
+      students.forEach(s => {
+        if (s.date === selectedDate) s.status = 'Present';
+      });
+      renderTable();
+    }
+
+    function renderTable() {
+      const table = document.getElementById('attendanceTable');
+      table.innerHTML = '';
+
+      const todaysStudents = students.filter(s => s.date === selectedDate);
+
+      todaysStudents.forEach((student, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${student.name}</td>
+          <td>
+            <button class="status-btn ${student.status === 'Present' ? 'present' : 'absent'}"
+              onclick="toggleStatus(${index})">
+              ${student.status}
+            </button>
+          </td>
+        `;
+        table.appendChild(row);
+      });
+
+      updateSummary(todaysStudents);
+    }
+
+    function updateSummary(list) {
+      const total = list.length;
+      const present = list.filter(s => s.status === 'Present').length;
+      const absent = total - present;
+      const percent = total === 0 ? 0 : Math.round((present / total) * 100);
+
+      document.getElementById('totalStudents').innerText = total;
+      document.getElementById('presentCount').innerText = present;
+      document.getElementById('absentCount').innerText = absent;
+      document.getElementById('percentage').innerText = percent + '%';
+    }
+
+    document.getElementById('attendanceDate').addEventListener('change', (e) => {
+      selectedDate = e.target.value;
+      renderTable();
+    });
+  </script>
+</body>
+</html>
 
