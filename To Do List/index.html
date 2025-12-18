@@ -1,1 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📝 Pro To-Do List</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Font Awesome for icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
 
+<div class="container">
+<div class="header">
+  <h1>📝 My Tasks</h1>
+  <button class="dark-btn" onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
+</div>
+
+
+  <div class="input-box">
+    <input type="text" id="taskInput" placeholder="Quick add task..." onkeypress="if(event.key==='Enter') addTask()">
+    <input type="date" id="dueDate">
+    <input type="time" id="dueTime">
+    <select id="priority">
+      <option value="Low">Low</option>
+      <option value="Medium">Medium</option>
+      <option value="High">High</option>
+    </select>
+    <button onclick="addTask()"><i class="fas fa-plus"></i> Add</button>
+  </div>
+
+  <div class="filters">
+    <button onclick="filterTasks('all')">All</button>
+    <button onclick="filterTasks('pending')">Pending</button>
+    <button onclick="filterTasks('completed')">Completed</button>
+    <button onclick="filterTasks('overdue')">Overdue</button>
+  </div>
+
+  <ul id="taskList"></ul>
+
+  <div class="clear-all">
+    <button onclick="clearAll()"><i class="fas fa-trash"></i> Clear All</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
